@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="services/todo.js"></script>
+    <script>
+        // angularjs 모듈 생성하기
+        var app = angular.module('myApp',['myService']);
+        
+        // angularjs모듈에 서비스 등록하기
+        
+        
+        // angularjs모듈에 컨트롤러 등록하기
+        
+    </script>
+    <script src="controllers/todo.js"></script>
+    <title>Document</title>
+</head>
+<body ng-app="myApp" ng-controller="todoCtrl">
+    <div class="container">
+        <h1>Todo</h1>
+        <table class="table table-condensed">
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>완료여부</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="todo in todos">
+                    <td>{{$index+1}}</td>
+                    <td>{{todo.title}}</td>
+                    <td>{{todo.writer}}</td>
+                    <td>{{todo.completed ? '완료':'처리중'}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

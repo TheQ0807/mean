@@ -1,0 +1,76 @@
+<% include ../common/header %>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script>
+    var app = angular.module('app', []);
+    
+    app.controller('boardCtrl', function($scope, $http){
+        
+        $scope.formview = false;
+        $scope.boardList = [];
+        
+        
+        $http.get('getail.do').then(function(response){
+            $scope.boardList = response.data;
+        })
+        
+        
+        $scope.showform = function(){
+            $scope.title = "";
+            $scope.contents = "";
+            $scope.formview = true;
+        }
+        
+        $scope.createPost = function(t, c){
+            // ajax 동작이 필요 $http 라는녀석이 ajax기능이 구현되어있다.
+            $http.post("add.do", {title:t, contents:c}).then(function(response){
+                $scope.boardList.push(response.data);
+            });
+            
+            $scope.formview = false;
+        }
+        
+    })
+</script>
+<div ng-app="app" ng-controller="boardCtrl">
+    <h1>게시글</h1>
+    
+    <div class="row" ng-show="formview">
+        <form>
+            <div class="form-group">
+                <label>제목</label>
+                <input type="text" class="form-control" ng-model="title"/>
+            </div>
+            <div class="form-group">
+                <label>내용</label>
+                <textarea rows="3" class="form-control" ng-model="contents" ></textarea>
+            </div>
+            <div class="text-right">
+                <button type="submit" class="btn btn-primary" ng-click="createPost(title,contents)">등록</button>
+            </div>
+        </form>
+    </div>
+    
+    <table class="table table-conednsed">
+        <thead>
+            <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>날짜</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="board in boardList">
+                <td>{{board._id}}</td>
+                <td>{{board.title}}</td>
+                <td>{{board.userid}}</td>
+                <td>{{board.create_date}}</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div class="text-right">
+        <button class="btn btn-primary" ng-click="showform()">새글</button>
+    </div>
+</div>
+<% include ../common/footer %>

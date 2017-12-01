@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>    
+    <script>
+        angular.module('myApp',[])
+        .controller('productCtrl',function($scope){
+            $scope.products=[
+                {name:"iphone",price:"1400000", maker:"apple",pubdate:new Date()},
+                {name:"macbook",price:"2250000", maker:"apple",pubdate:new Date()},
+                {name:"galaxy",price:"1000000", maker:"samsung",pubdate:new Date()},
+                {name:"gram",price:"1200000", maker:"LG",pubdate:new Date()},
+                {name:"ps4 pro",price:"500000", maker:"sony",pubdate:new Date()},
+                {name:"nintendo switch",price:"600000", maker:"nintendo",pubdate:new Date()}
+            ];
+        })
+        .directive("itemWidget", function(){
+            return{
+                templateUrl:'item.html'
+            }
+        })
+    </script>
+    <title>Document</title>
+</head>
+<body ng-app="myApp" ng-controller="productCtrl">
+    <div class="container">
+        <h1>제품 목록</h1>
+        <div ng-repeat="product in products">
+            <div item-widget></div>
+        </div>
+    </div>
+</body>
+</html>

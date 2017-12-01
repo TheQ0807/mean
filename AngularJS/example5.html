@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>    
+    <script>
+        angular.module('myApp', [])
+        .filter("idHidden",function(){
+            return function(item){
+                if(angular.isString(item)){
+                    var id = item.substring(0, 3);
+                    var size = item.length - 3 ;
+                    for(var i=0; i<size; i++){
+                        id +='*';
+                    }
+                    return id;
+                } else{
+                    return item;
+                }
+            }
+        })
+        .filter('passwordHidden', function(){
+            return function(item, attr){
+                if(attr){
+                   if(angular.isNumber(attr)){
+                       var id = item.substring(0, attr);
+                       var size = item.length - 3 ;
+                     for(var i=0; i<size; i++){
+                        id +='*';
+                     }
+                       return id;
+                      } else{
+                          return "********";
+                      }
+                } else {
+                    return "********";
+                }
+            }
+        })
+        .filter('grade',function(){
+            return function(items, attr){
+                if(angular.isArray(items)){
+                    
+                    if(attr == 'ALL'){
+                        return items;
+                       }
+                    
+                    var filtered = [];
+                    items.forEach(function(item, index){
+                        if(item.grade == attr){
+                            filtered.push(item);
+                        }
+                    });
+                    return filtered;
+                } else {
+                    return items;
+                }
+            }
+        })
+            .controller('userCtrl', function($scope) {
+                $scope.userList = [
+                    {id:'hong', name:"홍길동", password:"zxcv1234", grade:'GOLD', point:580},
+                    {id:'youshin', name:"김유신", password:"1234fyzs", grade:'SILVER', point:100},
+                    {id:'gamchan', name:"강감찬", password:"asdfghjk", grade:'SILVER', point:250},
+                    {id:'sunshin', name:"이순신", password:"qwertyui", grade:'BRONZE', point:10},
+                    {id:'kwansoon', name:"류관순", password:"12345678", grade:'SILVER', point:270},
+                    {id:'goo', name:"김구", password:"][poiuyt]", grade:'GOLD', point:900},
+                    {id:'jungkeun', name:"안중근", password:"zxcvbnm,", grade:'GOLD', point:700},
+                    {id:'jwajin', name:"김좌진", password:"';lkjhgf", grade:'SILVER', point:300},
+                    {id:'bumdo', name:"홍범도", password:"plmoknij", grade:'BRONZE', point:50},
+                    {id:'bongchang', name:"이봉창", password:"zxc1234z", grade:'SILVER', point:180},
+                    {id:'dongju', name:"윤동주", password:"zxc12341", grade:'GOLD', point:980},
+                    {id:'yooksa', name:"이육사", password:"v1234zxc", grade:'BRONZE', point:80}
+                ];
+            
+                $scope.selectGrade = 'ALL';
+            });
+    </script>
+    <title>Document</title>
+</head>
+<body ng-app="myApp" ng-controller="userCtrl">
+   <div class="container">
+    <h1>사용자 리스트</h1>
+    
+    <div>
+        <select ng-model="selectGrade">
+            <option value="ALL">전체</option>
+            <option value="GOLD">골드</option>
+            <option value="SILVER">실버</option>
+            <option value="BRONZE">브론즈</option>
+        </select>
+    </div>
+    
+    <table class="table table-condensed">
+        <thead>
+            <tr>
+                <th>아이디</th>
+                <th>이름</th>
+                <th>비밀번호</th>
+                <th>등급</th>
+                <th>포인트</th>
+            </tr>
+        </thead>
+            <tr ng-repeat="user in userList | grade:selectGrade ">        <!--크기 제한 -->
+                <td>{{user.id | idHidden}}</td>
+                <td>{{user.name}}</td>
+                <td>{{user.password | passwordHidden: 3}}</td>        <!-- 하나의 값만을 제한 -->
+                <td>{{user.grade}}</td>
+                <td>{{user.point}}</td>
+            </tr>
+    </table>
+    </div>
+</body>
+</html>
